@@ -1,0 +1,88 @@
+Read and write FASTA format.
+
+oldowan.fasta is a small bioinformatic utility to read and write sequence data
+in the FASTA_ format. FASTA is the most commonly used simple file format for
+storing multiple DNA, RNA, or protein sequences in a single file. It is a
+text-based, human-readable format.
+
+Installation Instructions
+=========================
+
+This package is pure Python and has no dependencies outside of the standard
+library. The easist way to install is using ``easy_install`` from the
+setuptools_ package.  This usually goes something like this::
+
+	$ easy_install oldowan.fasta
+
+or on a unix-like system, assuming you are installing to the main Python
+``site-packages`` directory as a non-privileged user, this::
+
+	$ sudo easy_install oldowan.fasta
+
+You may also use the standard python distutils setup method. Download the
+current source archive from the file list towards the bottom of this page,
+unarchive it, and install. On Mac OS X and many other unix-like systems, having
+downloaded the archive and changed to the directory containing this archive in
+your shell, this might go something like::
+
+	$ tar xvzf oldowan.fasta*
+	$ cd oldowan.fasta*
+	$ python setup.py install
+
+Quick Start
+===========
+
+oldowan.fasta has an interface based on the standard Python ``file``.  Import
+oldowan.fasta::
+
+  >>> from oldowan.fasta import fasta
+
+Read a FASTA format file::
+
+  >>> for entry in fasta('sequences.fasta', 'r'):
+  ...     print entry['name'], len(entry['sequence'])
+
+A more cumbersome, but equivalent way of doing the above::
+
+  >>> fasta_file = fasta('sequences.fasta', 'r')
+  >>> for entry in fasta_file:
+  ...     print entry['name'], len(entry['sequence'])
+  >>> fasta_file.close()
+
+Even more cumbersome, and if the FASTA file is large, potentially
+memory-draining version (the previous two methods only read one entry at a time
+from the file, this reads the whole file into memory at once)::
+
+  >>> fasta_file = fasta('sequence.fasta', 'r')
+  >>> entries = fasta_file.readentries()
+  >>> fasta_file.close()
+  >>> for entry in entries:
+  ...     print entry['name'], len(entry['sequence'])
+
+Read a string of FASTA format sequences::
+
+  >>> fasta_string = open('sequences.fasta', 'r').read()
+  >>> for entry in fasta(fasta_string, 's'):
+  ...     print entry['name'], len(entry['sequence'])
+
+Read a file object::
+
+  >>> fasta_file = open('sequences.fasta', 'r')
+  >>> for entry in fasta(fasta_file, 'f'):
+  ...     print entry['name'], len(entry['sequence'])
+
+Write to a file::
+
+  >>> fasta_file = open('sequences.fasta', 'w')
+  >>> fasta_file.write({'name':'Sequence1', 'sequence':'AGCTAGCT'})
+  >>> fasta_file.close()
+
+Release History
+===============
+
+1.0.0 (August 16, 2008)
+    initial release of module.
+
+
+.. _FASTA: http://en.wikipedia.org/wiki/Fasta_format 
+.. _setuptools: http://peak.telecommunity.com/DevCenter/EasyInstall
