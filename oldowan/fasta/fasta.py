@@ -2,15 +2,29 @@ import re
 import StringIO
 
 class fasta(object):
-    """fasta(filename_or_data[, mode[, parse]]) -> a fasta object.
+    """Create a fasta file object::
 
-    Create a fasta object. The mode can be 'r' (reading, default), 
-    's' (string data), 'f' (file object), 'a' (append), or 'w' (write).
-    The file will be created if it doesn't exist for writing or appending;
-    it will be truncated when opened for reading. For read mode, 
-    universal newline support is automatically invoked. By default, each
-    FASTA entry is parsed into a dict with 'name' and 'sequence'
-    values (parse=True). For 'raw' strings, set parse=False."""
+        f = fasta(filename_or_data,[ mode="r",[ parse=True]])
+
+    The API for the fasta file object closely follows the interface of the standard
+    python file object. 
+
+    The mode can be one of:
+
+    * 'r' - reading (default)
+    * 's' - string data
+    * 'f' - file object
+    * 'a' - append
+    * 'w' - write 
+    
+    The file will be created if it doesn't exist for writing or appending; it
+    will be truncated when opened for reading. 
+        
+    For read mode, universal newline support is automatically invoked. 
+    
+    By default, each FASTA entry is parsed into a dict with 'name' and
+    'sequence' values (parse=True). For 'raw' strings, set parse=False.
+    """
 
     __parse = True
     def __get_parse(self):
