@@ -1,13 +1,14 @@
 import re
 import StringIO
 
+
 class fasta(object):
     """Create a fasta file object::
 
         f = fasta(filename_or_data,[ mode="r",[ parse=True]])
 
-    The API for the fasta file object closely follows the interface of the standard
-    python file object. 
+    The API for the fasta file object closely follows the interface of the
+    standard python file object.
 
     The mode can be one of:
 
@@ -15,36 +16,42 @@ class fasta(object):
     * 's' - string data
     * 'f' - file object
     * 'a' - append
-    * 'w' - write 
-    
+    * 'w' - write
+
     The file will be created if it doesn't exist for writing or appending; it
-    will be truncated when opened for reading. 
-        
-    For read mode, universal newline support is automatically invoked. 
-    
+    will be truncated when opened for reading.
+
+    For read mode, universal newline support is automatically invoked.
+
     By default, each FASTA entry is parsed into a dict with 'name' and
     'sequence' values (parse=True). For 'raw' strings, set parse=False.
     """
 
     __parse = True
+
     def __get_parse(self):
         return self.__parse
+
     def __set_parse(self, value):
         if not isinstance(value, bool):
             raise ValueError("'%s' is not a boolean." % value)
         self.__parse = value
+
     parse = property(fget=__get_parse,
                      fset=__set_parse,
                      doc="parse entry into dict (default=True)")
 
     __mode = None
+
     def __get_mode(self):
         return self.__mode
+
     mode = property(fget=__get_mode,
                     doc="file mode ('r', 's', 'f', 'w', or 'a')")
 
     def __get_closed(self):
         return self.__fobj.closed
+
     closed = property(fget=__get_closed,
                       doc="True if the file is closed")
 
@@ -52,11 +59,14 @@ class fasta(object):
     __buff = 'x' # needs to be initialized with non-zero, non-'>' character
 
     def __init__(self, filename_or_data, mode='r', parse=True):
-        """x.__init__(...) initializes x; see x.__class__.__doc__ for signature"""
+        """x.__init__(...) initializes x
+
+        see x.__class__.__doc__ for signature"""
+
         if mode[0] in ['r', 'a', 'w']:
-            if mode == 'r': 
+            if mode == 'r':
                 # force universal read mode
-                mode = 'rU' 
+                mode = 'rU'
             self.__fobj = open(filename_or_data, mode)
         elif mode == 'f':
             self.__fobj = filename_or_data
@@ -105,10 +115,10 @@ class fasta(object):
 
     def readentry(self):
         """readentry() -> next entry, as a dict.
-        
+
         Return None at EOF."""
         # read until the start of the next entry
-        while not self.__buff.startswith('>'): 
+        while not self.__buff.startswith('>'):
             self.__buff = self.__fobj.readline()
             if self.__buff == '':
                 # EOF
@@ -125,20 +135,20 @@ class fasta(object):
         if self.parse:
             return parse_fasta(current_str)
         return(current_str)
-        
+
     def readentries(self):
         """readentries() -> list of entries, each a dict.
 
         Call readentry() repeatedly and return a list of the entries read."""
         return list(x for x in self)
-    
+
     def write(self, entry, wrap_at=80, endline='\n'):
         """write(entry) -> None. Write entry dict to file.
 
         argument dict 'entry' must have keys 'name' and 'sequence', both
         with string values."""
         if isinstance(entry, dict):
-            if name.has_key('name') and name.has_key('sequence'):
+            if 'name' in entry and 'sequence' in entry:
                 self.__fobj.write(entry2str(entry, wrap_at, endline))
         else:
             raise ValueError('either name or sequence of incorrect type')
@@ -152,8 +162,8 @@ class fasta(object):
 
 
 def parse_fasta(entry):
-    """parse_fasta(entry) -> dict. entry is a string. 
-    
+    """parse_fasta(entry) -> dict. entry is a string.
+
     Parse a string representation of a single FASTA entry into a dict.
     The returned dict has values for 'name' and 'sequence'."""
     if not entry.startswith('>'):
@@ -183,10 +193,9 @@ def entry2str(entry, wrap_at=80, endline='\n'):
     # for the wrapping, DON'T use 'textwrap.wrap'. It is very slow because
     # it tries to be clever and find word breaks to wrap at.
     exploded_seq = list(entry['sequence'])
-    wrap_points = range(0,len(exploded_seq),wrap_at)
+    wrap_points = range(0, len(exploded_seq), wrap_at)
     wrap_points.reverse()
     for i in wrap_points[:-1]:
         exploded_seq.insert(i, '\n')
     s = s + exploded_seq + ['\n']
     return ''.join(s)
-    

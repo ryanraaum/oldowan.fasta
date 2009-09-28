@@ -1,9 +1,10 @@
 from setuptools import setup, find_packages
-import sys, os
+import os
 
 PACKAGE = 'fasta'
 
-VERSION = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),'oldowan', PACKAGE, 'VERSION')).read().strip()
+VERSION = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+               'oldowan', PACKAGE, 'VERSION')).read().strip()
 
 desc_lines = open('README', 'r').readlines()
 
@@ -17,8 +18,7 @@ setup(name='oldowan.%s' % PACKAGE,
           "License :: OSI Approved :: MIT License",
           "Operating System :: OS Independent",
           "Programming Language :: Python",
-          "Topic :: Scientific/Engineering :: Bio-Informatics"
-      ],
+          "Topic :: Scientific/Engineering :: Bio-Informatics"],
       keywords='',
       platforms=['Any'],
       author='Ryan Raaum',
