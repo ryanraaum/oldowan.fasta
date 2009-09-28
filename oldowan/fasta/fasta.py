@@ -147,14 +147,13 @@ class fasta(object):
 
         argument dict 'entry' must have keys 'name' and 'sequence', both
         with string values."""
-        if isinstance(entry, dict):
-            if 'name' in entry and 'sequence' in entry:
-                self.__fobj.write(entry2str(entry, wrap_at, endline))
+        if 'name' in entry and 'sequence' in entry:
+            self.__fobj.write(entry2str(entry, wrap_at, endline))
         else:
-            raise ValueError('either name or sequence of incorrect type')
+            raise ValueError('entry missing either name or sequence')
 
-    def writeentries(self, entries):
-        """writeentries(entries) -> None. Write list of entries to file.
+    def write_entries(self, entries):
+        """write_entries(entries) -> None. Write list of entries to file.
 
         The equivalent of calling write for each entry."""
         for entry in entries:
