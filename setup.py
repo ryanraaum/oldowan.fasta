@@ -28,7 +28,6 @@ setup(name='oldowan.%s' % PACKAGE,
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       namespace_packages=['oldowan'],
-      data_files=[("oldowan/%s" % PACKAGE, ["oldowan/%s/VERSION" % PACKAGE])],
       zip_safe=False,
       test_suite='nose.collector',
       )
