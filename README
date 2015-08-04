@@ -89,5 +89,8 @@ Release History
 1.0.2 (March 26, 2009)
     update VERSION info
 
+1.0.3 (August 4, 2015)
+    actually fix version loading problem this time
+
 .. _FASTA: http://en.wikipedia.org/wiki/Fasta_format 
 .. _setuptools: http://peak.telecommunity.com/DevCenter/EasyInstall
